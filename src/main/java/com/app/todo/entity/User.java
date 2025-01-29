@@ -2,7 +2,6 @@ package com.app.todo.entity;
 
 import jakarta.persistence.*;
 
-import javax.management.relation.Role;
 import java.util.Set;
 
 @Entity

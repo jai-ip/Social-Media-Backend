@@ -1,14 +1,18 @@
 package com.app.todo.filter;
 
-import com.app.todo.entity.User;
 import com.app.todo.repo.UserRepo;
+import com.app.todo.security.SecurityUser;
 import com.app.todo.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,17 +22,15 @@ import java.util.Optional;
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
     private UserRepo userRepo;
-
-    public JWTAuthenticationFilter(JwtUtils jwtUtils) {
-        this.jwtUtils = jwtUtils;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String headerContent = request.getHeader("Authorization");
+        String headerContent = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String userName = null;
         String jwt = null;
@@ -39,11 +41,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepo.findByUserName(userName).get();
-//            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                    new UsernamePasswordAuthenticationToken(user, null, user.getRoles());
+            var user = userRepo.findByUserName(userName);
+            var userDetails = user
+                    .map(SecurityUser::new)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found!!!"));
+            var authToken = new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
-
+        filterChain.doFilter(request, response);
     }
 }
