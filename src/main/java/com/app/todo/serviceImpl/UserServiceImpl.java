@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String addUser(UserDTO userDTO) {
         User user = new User();
+        System.out.println("user: "+userDTO.toString());
         user.setUserName(userDTO.getUserName());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
