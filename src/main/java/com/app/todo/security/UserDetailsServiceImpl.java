@@ -18,11 +18,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("INSIDE");
+
         Optional<User> userOptional = userRepo.findByUserName(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found!!!"));
-
-        System.out.println("loadUserByUsername????>>>>"+user.toString());
 
         return userOptional
                 .map(SecurityUser::new)

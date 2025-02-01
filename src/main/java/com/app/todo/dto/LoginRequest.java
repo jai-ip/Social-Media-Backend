@@ -1,8 +1,12 @@
 package com.app.todo.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequest {
 
+    @NotBlank(message = "username must be entered")
     private String userName;
+    @NotBlank(message = "password must be entered")
     private String password;
 
     public String getUserName() {

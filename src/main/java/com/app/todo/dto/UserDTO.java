@@ -1,10 +1,14 @@
 package com.app.todo.dto;
 
-import java.util.Set;
+import jakarta.validation.constraints.NotBlank;
 
 public class UserDTO {
+
+    @NotBlank(message = "userName must be entered")
     private String userName;
+    @NotBlank(message = "password must be entered")
     private String password;
+    @NotBlank(message = "role must be entered")
     private String role;
 
     public String getUserName() {
