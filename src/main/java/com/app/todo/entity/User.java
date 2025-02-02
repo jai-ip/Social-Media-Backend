@@ -1,5 +1,6 @@
 package com.app.todo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -16,6 +17,7 @@ public class User {
     @Column(name = "USERNAME")
     private String userName;
 
+    @JsonIgnore
     @Column(name = "PASSWORD")
     private String password;
 
