@@ -24,7 +24,7 @@ public class Comment {
     private Instant createdAt;
 
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
     private Post post;
 
