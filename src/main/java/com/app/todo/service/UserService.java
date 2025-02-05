@@ -12,4 +12,6 @@ public interface UserService {
     public ResponseEntity<SuccessResponse> addUser(UserDTO userDTO);
 
     public List<User> getAllUsers();
+
+    public ResponseEntity<SuccessResponse> followUser(Long followerUserId, Long followingUserId);
 }

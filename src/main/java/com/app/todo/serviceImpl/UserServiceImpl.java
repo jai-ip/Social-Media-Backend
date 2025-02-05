@@ -57,5 +57,20 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAllUserByRoleName(Constant.USER);
     }
 
+    @Override
+    public ResponseEntity<SuccessResponse> followUser(Long followerUserId, Long followingUserId) {
+
+        User followeruser = userRepo.findByUserId(followerUserId)
+                .orElseThrow(() -> new CustomException("User not found, UserId: "+followerUserId, HttpStatus.NOT_FOUND));
+
+        User followingUser = userRepo.findByUserId(followingUserId)
+                .orElseThrow(() -> new CustomException("User not found, UserId: "+followingUserId, HttpStatus.NOT_FOUND));
+
+        followeruser.getFollowing().add(followingUser);
+        userRepo.save(followeruser);
+
+        return new ResponseEntity<>(new SuccessResponse(true, "User followed"), HttpStatus.OK);
+    }
+
 
 }

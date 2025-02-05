@@ -7,10 +7,7 @@ import com.app.todo.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @GetMapping("addUser")
+    @PostMapping("addUser")
     public ResponseEntity<SuccessResponse> addUser(@Valid @RequestBody UserDTO userDTO) {
         return userService.addUser(userDTO);
     }
@@ -29,5 +26,10 @@ public class UserController {
     @GetMapping("getAllUsers")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @PostMapping("followUser/{followerUserId}/{followingUserId}")
+    public ResponseEntity<SuccessResponse> addUser(@PathVariable Long followerUserId, @PathVariable Long followingUserId) {
+        return userService.followUser(followerUserId, followingUserId);
     }
 }

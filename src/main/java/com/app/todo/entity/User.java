@@ -1,8 +1,11 @@
 package com.app.todo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +30,18 @@ public class User {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USER_FOLLOWERS",
+            joinColumns = @JoinColumn(name = "FOLLOWER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FOLLOWING_ID"))
+    @JsonManagedReference
+    private List<User> following;
+
+    @ManyToMany(mappedBy = "following")
+    @JsonBackReference
+    private List<User> followers;
 
     public Long getUserId() {
         return userId;
@@ -58,6 +73,22 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     @Override
