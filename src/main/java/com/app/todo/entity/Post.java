@@ -2,11 +2,8 @@ package com.app.todo.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +21,10 @@ public class Post {
     @CreationTimestamp
     @Column(name = "CREATED_AT")
     private Instant createAt;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -76,5 +77,13 @@ public class Post {
 
     public void setLikes(List<Like> likes) {
         this.likes = likes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -43,6 +43,9 @@ public class User {
     @JsonBackReference
     private List<User> followers;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
     public Long getUserId() {
         return userId;
     }
@@ -89,6 +92,14 @@ public class User {
 
     public void setFollowers(List<User> followers) {
         this.followers = followers;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override
