@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>com.app</groupId>
-	<artifactId>todo</artifactId>
+	<artifactId>Social-Media-Backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>todo</name>
 	<description>Social Media - Backend</description>
