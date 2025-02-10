@@ -52,15 +52,22 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found, UserId: "+userId));
 
         List<Post> posts = postRepo.findPostByUser(user);
-        System.out.println("POST Size: "+posts.size());
         return posts.stream()
                 .map(this::getPostDataDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<PostDataDTO> getAllPostOfFollowersByUserId(Long userId) {
-        return List.of();
+
+        List<User> users = userRepo.findFollowingByUserId(userId);
+        List<Post> posts = users.stream()
+                .flatMap(user -> user.getPosts().stream())
+                .toList();
+
+        return posts.stream()
+                .map(this::getPostDataDTO)
+                .toList();
     }
 
     @Override

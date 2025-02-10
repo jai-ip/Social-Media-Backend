@@ -29,6 +29,11 @@ public class PostController {
         return postService.getPostsByUserId(userId);
     }
 
+    @GetMapping("getAllPostOfFollowersByUserId/{userId}")
+    public List<PostDataDTO> getAllPostOfFollowersByUserId(@PathVariable Long userId) {
+        return postService.getAllPostOfFollowersByUserId(userId);
+    }
+
     @GetMapping("getAllPost")
     public List<Post> getAllPost() {
         return postService.getAllPost();
