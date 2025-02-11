@@ -3,7 +3,6 @@ package com.app.todo.controller;
 import com.app.todo.dto.PostDTO;
 import com.app.todo.dto.PostDataDTO;
 import com.app.todo.dto.SuccessResponse;
-import com.app.todo.entity.Post;
 import com.app.todo.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

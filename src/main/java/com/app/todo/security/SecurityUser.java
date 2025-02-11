@@ -1,13 +1,11 @@
 package com.app.todo.security;
 
 import com.app.todo.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -34,6 +32,10 @@ public class SecurityUser implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUserName();
+    }
+
+    public Long getUserId() {
+        return user.getUserId();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.app.todo.filter;
 
+import com.app.todo.entity.User;
 import com.app.todo.repo.UserRepo;
 import com.app.todo.security.SecurityUser;
 import com.app.todo.utils.JwtUtils;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
@@ -41,11 +41,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var user = userRepo.findByUserName(userName);
-            var userDetails = user
-                    .map(SecurityUser::new)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found!!!"));
-            var authToken = new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
+            User user = userRepo.findByUserName(userName)
+                    .orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+            var userDetails = new SecurityUser(user);
+            var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
